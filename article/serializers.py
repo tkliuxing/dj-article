@@ -12,6 +12,7 @@ class CategorySerializer(ModelSerializer):
             'pk',
             'name',
             'parent',
+            'items',
         )
 
     def get_items(self, obj):
@@ -35,12 +36,14 @@ class FlatCategorySerializer(serializers.ModelSerializer):
 class ArticleSerializer(ModelSerializer):
     next_article = serializers.SerializerMethodField()
     prev_article = serializers.SerializerMethodField()
+    category_info = FlatCategorySerializer(source='category', read_only=True)
 
     class Meta:
         model = models.Article
         fields = (
             'pk',
             'category',
+            'category_info',
             'title',
             'create_time',
             'create_time_display',
